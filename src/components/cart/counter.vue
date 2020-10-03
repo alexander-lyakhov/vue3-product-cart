@@ -12,7 +12,7 @@ import {mapState, mapGetters} from 'vuex'
 
 export default {
   name: 'counter',
-  
+
   props: {
     min: {
       type: Number,
@@ -32,7 +32,7 @@ export default {
 
   directives: {
     wheel: {
-      inserted: function(el, binding) {
+      mounted: function(el, binding) {
         el.addEventListener('wheel', binding.value.bind(this));
         el.addEventListener('DOMMouseScroll', binding.value.bind(this));
       }
@@ -76,20 +76,20 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   &.selected {
     background: #ec9;
   }
-  
+
   button {
     background: transparent;
     border: none;
     outline: 0;
     width: 32px;
-    height: 32px;  
+    height: 32px;
     cursor: pointer;
     transition: all 0.2s;
-    
+
     &:after {
       content: '';
       display: block;
@@ -97,7 +97,7 @@ export default {
       height: 16px;
       position: relative;
     }
-    
+
     &.decrease {
       &:after {
         border-left: 4px solid #404040;
@@ -119,7 +119,7 @@ export default {
       }
     }
   }
-  
+
   .value {
     font-size: 1rem;
     color: #000;
