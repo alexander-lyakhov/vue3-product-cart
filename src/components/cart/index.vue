@@ -29,7 +29,7 @@
 <script>
 
 import {mapState, mapGetters, mapMutations} from 'vuex'
-import counter from './counter'
+import counter from './counter-composition'
 
 export default {
   name: 'cart',
