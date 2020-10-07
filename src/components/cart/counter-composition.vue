@@ -32,15 +32,15 @@ export default {
   },
 
   setup(props, { emit }) {
-    const  decrease = () => {
+    const decrease = () => {
       if (props.value > props.min) {
-        emit('decrease');
+        emit('change', props.value - 1)
       }
     }
 
-    const  increase = () => {
+    const increase = () => {
       if (props.value < props.max || !props.max) {
-        emit('increase');
+        emit('change', props.value + 1)
       }
     }
 

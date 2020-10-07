@@ -13,7 +13,7 @@
       Price: {{cart.price}}$
     </div>
 
-    <counter :value="amount" :max="cart.limit" @decrease="decrease" @increase="increase" />
+    <counter :value="amount" :max="cart.limit" @change="change" />
 
     <div class="price-total">
       <span>Total:</span>
@@ -66,23 +66,12 @@ export default {
   methods: {
     ...mapMutations(['decreaseTotal', 'increaseTotal', 'decreaseAmount']),
 
-    setAmoun(amount) {
+    change(value) {
+      this.amount > value ?
+        this.decreaseTotal(this.cart.price):
+        this.increaseTotal(this.cart.price);
 
-      this.amount > amount ?
-        this.decrease(this.cart.price):
-        this.increase(this.cart.price);
-
-      this.amount = amount;
-    },
-
-    decrease() {
-      this.amount--;
-      this.decreaseTotal(this.cart.price);
-    },
-
-    increase() {
-      this.amount++;
-      this.increaseTotal(this.cart.price);
+      this.amount = value;
     },
 
     reset() {
