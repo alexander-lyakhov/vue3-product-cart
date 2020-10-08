@@ -28,7 +28,8 @@
 
 <script>
 
-import {mapState, mapGetters, mapMutations} from 'vuex'
+import { useStore } from 'vuex'
+import { reactive, ref, toRefs, computed } from 'vue'
 import counter from './counter-composition'
 
 export default {
@@ -45,40 +46,38 @@ export default {
     }
   },
 
-  data() {
-    return {
+  setup({cart}, context) {
+    const state = reactive({
       amount: 0,
+    })
+
+    const store = useStore();
+
+    return {
+      ...toRefs(state),
+
+      totalPrice: computed(() =>
+        cart.price * state.amount
+      ),
+
+      isResetActive: computed(() =>
+        state.amount > 0
+      ),
+
+      change(value) {
+        state.amount > value ?
+          store.commit('decreaseTotal', cart.price):
+          store.commit('increaseTotal', cart.price);
+
+        state.amount = value;
+      },
+
+      reset() {
+        store.commit('decreaseAmount', {amount: state.amount, price: cart.price})
+        state.amount = 0;
+      }
     }
   },
-
-  computed: {
-    ...mapState(['products']),
-
-    totalPrice() {
-      return this.cart.price * this.amount;
-    },
-
-    isResetActive() {
-      return this.amount > 0;
-    }
-  },
-
-  methods: {
-    ...mapMutations(['decreaseTotal', 'increaseTotal', 'decreaseAmount']),
-
-    change(value) {
-      this.amount > value ?
-        this.decreaseTotal(this.cart.price):
-        this.increaseTotal(this.cart.price);
-
-      this.amount = value;
-    },
-
-    reset() {
-      this.decreaseAmount({amount: this.amount, price: this.cart.price})
-      this.amount = 0;
-    }
-  }
 }
 </script>
 
