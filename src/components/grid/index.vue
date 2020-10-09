@@ -1,9 +1,14 @@
 ﻿<template>
+  <div class="msg-loading">
+    Fetching data...
+  </div>
+  <!--
   <div class="grid">
     <div class="grid-cell" v-for="(cart, index) in products" :key="index">
       <product-cart :cart="cart" />
     </div>
   </div>
+  -->
 </template>
 
 <script>
@@ -25,6 +30,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.msg-loading {
+  font-size: 4rem;
+  background: #686868;
+  text-align: center;
+  letter-spacing: 2px;
+  width: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 2rem 0;
+}
 
 .grid {
   display: flex;
