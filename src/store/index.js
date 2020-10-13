@@ -1,9 +1,11 @@
 import { createStore } from 'vuex'
 import data from './data.json';
 
+const url = 'https://my-json-server.typicode.com/alexander-lyakhov/vue3-product-cart/products'
+
 export default createStore({
   state: {
-    products: data,
+    products: null,
     totalProducts: 0,
     totalPrice: 0
   },
@@ -15,6 +17,11 @@ export default createStore({
   },
 
   mutations: {
+    setProducts(state, data) {
+      console.log('setProducts', data)
+      state.products = data;
+    },
+
     decreaseTotal(state, price) {
       state.totalProducts--;
       state.totalPrice -= +price;
@@ -34,5 +41,12 @@ export default createStore({
       state.totalProducts += amount;
       state.totalPrice += amount * price;
     },
+  },
+
+  actions: {
+    async fetchProducts({commit}) {
+      const data = await fetch(url);
+      commit('setProducts', await data.json());
+    }
   }
 })

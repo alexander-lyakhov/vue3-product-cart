@@ -1,26 +1,50 @@
 ﻿<template>
-  <div class="msg-loading">
+  <div v-if="isLoading" class="msg-loading">
     Fetching data...
   </div>
-  <!--
-  <div class="grid">
+
+  <div v-else class="grid">
     <div class="grid-cell" v-for="(cart, index) in products" :key="index">
       <product-cart :cart="cart" />
     </div>
   </div>
-  -->
 </template>
 
 <script>
 
 import productCart from '@/components/cart';
-import {mapState} from 'vuex';
+import {mapState, useStore} from 'vuex';
+import {reactive, toRefs, ref} from 'vue';
+
+const url = 'https://my-json-server.typicode.com/alexander-lyakhov/vue3-product-cart/products'
 
 export default {
   name: 'Grid',
 
   components: {
     'product-cart': productCart
+  },
+
+  setup() {
+    const store = useStore();
+
+    const state = reactive({
+      isLoading: true,
+    });
+
+
+    store.dispatch('fetchProducts').then(
+      res => {
+        state.isLoading = false
+        console.log('>> res', res)
+      },
+      err => {
+        console.log('>> ERROR << ', err)
+      });
+
+    return {
+      ...toRefs(state)
+    }
   },
 
   computed: {
