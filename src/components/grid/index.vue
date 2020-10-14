@@ -1,13 +1,21 @@
 ﻿<template>
-  <div v-if="isLoading" class="msg-loading">
-    Fetching data...
-  </div>
-
-  <div v-else class="grid">
-    <div class="grid-cell" v-for="(cart, index) in products" :key="index">
-      <product-cart :cart="cart" />
+  <template v-if="!error">
+    <div v-if="!products.length" class="message msg-info">
+      Fetching data...
     </div>
-  </div>
+
+    <div v-else class="grid">
+      <div class="grid-cell" v-for="(cart, index) in products" :key="index">
+        <product-cart :cart="cart" />
+      </div>
+    </div>
+  </template>
+
+  <template v-else>
+    <div class="message msg-error">
+      {{error}}
+    </div>
+  </template>
 </template>
 
 <script>
@@ -29,18 +37,17 @@ export default {
     const store = useStore();
 
     const state = reactive({
-      isLoading: true,
+      error: ''
     });
-
 
     store.dispatch('fetchProducts').then(
       res => {
-        state.isLoading = false
-        console.log('>> res', res)
+        state.error = '';
       },
       err => {
-        console.log('>> ERROR << ', err)
-      });
+        setTimeout(() => state.error = err.toString().replace(/\"/,''), 1000);
+      }
+    );
 
     return {
       ...toRefs(state)
@@ -55,17 +62,26 @@ export default {
 
 <style lang="scss" scoped>
 
-.msg-loading {
-  font-size: 4rem;
-  background: #686868;
+.message {
   text-align: center;
   letter-spacing: 2px;
+  line-height: 6rem;
   width: 100%;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  padding: 2rem 0;
+  //padding: 2rem 0;
+}
+
+.msg-info {
+  font-size: 2rem;
+  background: #606080;
+}
+
+.msg-error {
+  font-size: 1.5rem;
+  background: #804040;
 }
 
 .grid {
