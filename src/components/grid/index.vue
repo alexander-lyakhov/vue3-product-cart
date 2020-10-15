@@ -1,14 +1,16 @@
 ﻿<template>
   <template v-if="!error">
-    <div v-if="!products.length" class="message msg-info">
-      Fetching data...
-    </div>
-
-    <div v-else class="grid">
-      <div class="grid-cell" v-for="(cart, index) in products" :key="index">
-        <product-cart :cart="cart" />
+    <transition name="fade">
+      <div v-if="isLoading" class="message msg-info" ref="msgInfo">
+        Fetching data...
       </div>
-    </div>
+
+      <div v-else class="grid">
+        <div class="grid-cell" v-for="(cart, index) in products" :key="index">
+          <product-cart :cart="cart" />
+        </div>
+      </div>
+    </transition>
   </template>
 
   <template v-else>
@@ -37,12 +39,16 @@ export default {
     const store = useStore();
 
     const state = reactive({
+      isLoading: true,
       error: ''
     });
 
+    const msgInfo = ref(null);
+
     store.dispatch('fetchProducts').then(
       res => {
-        state.error = '';
+        state.isLoading = false;
+        console.log('msg-info', document.querySelector('.msg-info'));
       },
       err => {
         setTimeout(() => state.error = err.toString().replace(/\"/,''), 1000);
@@ -50,7 +56,8 @@ export default {
     );
 
     return {
-      ...toRefs(state)
+      ...toRefs(state),
+      msgInfo,
     }
   },
 
@@ -71,7 +78,25 @@ export default {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  //padding: 2rem 0;
+}
+
+.message.fade-out {
+  opacity: 0;
+  transition: opacity .25s;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .5s ease;
+}
+
+.fade-enter-to {
+  opacity: 0;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 .msg-info {
