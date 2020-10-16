@@ -1,20 +1,18 @@
 ﻿<template>
   <template v-if="!error">
-    <transition name="fade">
-      <div v-if="isLoading" class="message msg-info" ref="msgInfo">
-        Fetching data...
-      </div>
+    <div v-if="isLoading" class="message msg-info transparent" ref="msgInfo">
+      Fetching data...
+    </div>
 
-      <div v-else class="grid">
-        <div class="grid-cell" v-for="(cart, index) in products" :key="index">
-          <product-cart :cart="cart" />
-        </div>
+    <div v-else class="grid">
+      <div class="grid-cell" v-for="(cart, index) in products" :key="index">
+        <product-cart :cart="cart" />
       </div>
-    </transition>
+    </div>
   </template>
 
   <template v-else>
-    <div class="message msg-error">
+    <div class="message msg-error fade-in">
       {{error}}
     </div>
   </template>
@@ -24,9 +22,8 @@
 
 import productCart from '@/components/cart';
 import {mapState, useStore} from 'vuex';
-import {reactive, toRefs, ref} from 'vue';
-
-const url = 'https://my-json-server.typicode.com/alexander-lyakhov/vue3-product-cart/products'
+import {reactive, toRefs, ref, onMounted} from 'vue';
+import { delay, fadeIn, fadeOut } from '@/components/grid/use-animation.js';
 
 export default {
   name: 'Grid',
@@ -45,15 +42,21 @@ export default {
 
     const msgInfo = ref(null);
 
-    store.dispatch('fetchProducts').then(
-      res => {
-        state.isLoading = false;
-        console.log('msg-info', document.querySelector('.msg-info'));
-      },
-      err => {
-        setTimeout(() => state.error = err.toString().replace(/\"/,''), 1000);
-      }
-    );
+    onMounted(async () => {
+      await fadeIn(msgInfo.value, 250); // 2nd argument is delay befor animation start
+      msgInfo.value.classList.remove('transparent');
+
+      store.dispatch('fetchProducts').then(
+        async (res) => {
+          await fadeOut(msgInfo.value, 500); // 2nd argument is delay befor animation start
+          state.isLoading = false;
+        },
+        async (err) => {
+          await fadeOut(msgInfo.value, 500) // 2nd argument is delay befor animation start
+          state.error = err.toString().replace(/\"/,'')
+        }
+      )
+    })
 
     return {
       ...toRefs(state),
@@ -69,6 +72,10 @@ export default {
 
 <style lang="scss" scoped>
 
+.transparent {
+  opacity: 0;
+}
+
 .message {
   text-align: center;
   letter-spacing: 2px;
@@ -80,25 +87,6 @@ export default {
   transform: translate(-50%, -50%);
 }
 
-.message.fade-out {
-  opacity: 0;
-  transition: opacity .25s;
-}
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity .5s ease;
-}
-
-.fade-enter-to {
-  opacity: 0;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
 .msg-info {
   font-size: 2rem;
   background: #606080;
@@ -107,6 +95,36 @@ export default {
 .msg-error {
   font-size: 1.5rem;
   background: #804040;
+}
+
+.fade-out {
+  animation: fade-out .25s;
+}
+
+@keyframes fade-out {
+  from  {
+    opacity: 1;
+    margin-top: 0;
+  }
+  to {
+    opacity: 0;
+    margin-top: -100px;
+  }
+}
+
+.fade-in {
+  animation: fade-in .25s;
+}
+
+@keyframes fade-in {
+  from  {
+    opacity: 0;
+    margin-top: 100px;
+  }
+  to {
+    opacity: 1;
+    margin-top: 0;
+  }
 }
 
 .grid {
