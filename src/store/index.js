@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 import data from './data.json';
 
-const url = 'http://my-json-server.typicode.com/alexander-lyakhov/vue3-product-cart/products'
+let url = 'http://my-json-server.typicode.com/alexander-lyakhov/vue3-product-cart/products'
 
 export default createStore({
   state: {
@@ -45,6 +45,11 @@ export default createStore({
 
   actions: {
     async fetchProducts({commit}) {
+      const params = new URLSearchParams(location.search);
+
+      if (params.get('forceError') === 'true') {
+        url = '';
+      }
       const data = await fetch(url);
 
       if (!data.ok) {

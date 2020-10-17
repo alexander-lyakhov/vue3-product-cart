@@ -23,7 +23,7 @@
 import productCart from '@/components/cart';
 import {mapState, useStore} from 'vuex';
 import {reactive, toRefs, ref, onMounted} from 'vue';
-import { delay, fadeIn, fadeOut } from '@/composition/use-animation.js';
+import { fadeIn, fadeOut } from '@/composition/use-animation.js';
 
 export default {
   name: 'Grid',
