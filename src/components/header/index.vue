@@ -9,6 +9,10 @@
       <span class="value">{{totalPrice}} $</span>
     </div>
     <div v-if="!totalProducts" class="stat cart-empty">Cart is empty</div>
+    <div class="languages">
+      <a href="#">en</a>
+      <a href="#">ru</a>
+    </div>
   </header>
 </template>
 
@@ -58,6 +62,14 @@ header {
 
     &.cart-empty {
       color: #f99;
+    }
+  }
+
+  .languages {
+    margin: 0 20px 0 auto;
+    a {
+      color: #eee;
+      padding: 0 .25rem;
     }
   }
 }
