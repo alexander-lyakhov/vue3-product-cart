@@ -1,11 +1,11 @@
 ﻿<template>
   <header>
     <div class="stat products">
-      Products in cart:
-      <span class="value">{{totalProducts}}</span>
+      {{ $t("products-in-cart") }}:
+      <span class="value">{{ totalProducts }}</span>
     </div>
     <div class="stat total-price">
-      Total price:
+      {{ $t("total-price") }}:
       <span class="value">{{totalPrice}} $</span>
     </div>
     <div v-if="!totalProducts" class="stat cart-empty">Cart is empty</div>
@@ -22,6 +22,10 @@ import {mapState} from 'vuex';
 
 export default {
   name: 'Header',
+
+  mounted() {
+    console.log('-->', this.$i18n)
+  },
 
   computed: {
     ...mapState(['totalProducts', 'totalPrice'])
