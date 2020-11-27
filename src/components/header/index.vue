@@ -8,10 +8,10 @@
       {{ $t("total-price") }}:
       <span class="value">{{totalPrice}} $</span>
     </div>
-    <div v-if="!totalProducts" class="stat cart-empty">Cart is empty</div>
+    <div v-if="!totalProducts" class="stat cart-empty">{{ $t('cart-is-empty') }}</div>
     <div class="languages">
-      <a href="#">en</a>
-      <a href="#">ru</a>
+      <a href="#" @click.prevent="setLocale('en')">en</a>
+      <a href="#" @click.prevent="setLocale('ru')">ru</a>
     </div>
   </header>
 </template>
@@ -29,6 +29,13 @@ export default {
 
   computed: {
     ...mapState(['totalProducts', 'totalPrice'])
+  },
+
+  methods: {
+    setLocale(locale = 'en') {
+      console.log(locale)
+      this.$i18n.locale = locale;
+    }
   }
 
 }

@@ -10,18 +10,18 @@
     </div>
 
     <div class="price">
-      Price: {{cart.price}}$
+      {{ $t('price') }}: {{cart.price}}$
     </div>
 
     <counter :value="amount" :max="cart.limit" @change="change" />
 
     <div class="price-total">
-      <span>Total:</span>
+      <span>{{ $t('total') }}:</span>
       <span>{{totalPrice}} $</span>
     </div>
 
     <div class="reset-wrapper" :class="{isActive: isResetActive}">
-      <button class="reset" @click.stop="reset" :disabled="!isResetActive">Reset</button>
+      <button class="reset" @click.stop="reset" :disabled="!isResetActive">{{ $t('reset') }}</button>
     </div>
   </div>
 </template>
