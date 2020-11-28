@@ -19,11 +19,12 @@
 <script>
 
 import {mapState} from 'vuex';
-import { useI18n } from 'vue-i18n'
+//import {useI18n} from 'vue-i18n';
 
 export default {
   name: 'Header',
 
+  /*
   setup() {
     const { locale } = useI18n();
 
@@ -38,12 +39,12 @@ export default {
       }
     }
   },
+  */
 
   computed: {
     ...mapState(['totalProducts', 'totalPrice'])
   },
 
-  /*
   methods: {
     setLocale(e, locale = 'en') {
       e.target.parentNode.children.forEach(el => {
@@ -54,8 +55,6 @@ export default {
       this.$i18n.locale = locale;
     }
   }
-  */
-
 }
 </script>
 
