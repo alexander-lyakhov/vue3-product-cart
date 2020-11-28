@@ -31,6 +31,12 @@ export default {
     }
   },
 
+  emits: {
+    change: {
+      type: Number
+    }
+  },
+
   setup(props, { emit }) {
     const decrease = () => {
       if (props.value > props.min) {
