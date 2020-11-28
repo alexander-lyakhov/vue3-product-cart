@@ -10,8 +10,8 @@
     </div>
     <div v-if="!totalProducts" class="stat cart-empty">{{ $t('cart-is-empty') }}</div>
     <div class="languages">
-      <a href="#" @click.prevent="setLocale('en')">en</a>
-      <a href="#" @click.prevent="setLocale('ru')">ru</a>
+      <a href="#" @click.prevent="setLocale($event, 'en')" class="selected">en</a>
+      <a href="#" @click.prevent="setLocale($event, 'ru')">ru</a>
     </div>
   </header>
 </template>
@@ -32,8 +32,12 @@ export default {
   },
 
   methods: {
-    setLocale(locale = 'en') {
-      console.log(locale)
+    setLocale(e, locale = 'en') {
+      e.target.parentNode.children.forEach(el => {
+        el === e.target ?
+          el.classList.add('selected'):
+          el.classList.remove('selected');
+      })
       this.$i18n.locale = locale;
     }
   }
@@ -79,8 +83,12 @@ header {
   .languages {
     margin: 0 20px 0 auto;
     a {
-      color: #eee;
+      color: #a0a0a0;
       padding: 0 .25rem;
+
+      &.selected {
+        color: #eee;
+      }
     }
   }
 }
