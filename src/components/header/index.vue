@@ -10,8 +10,8 @@
     </div>
     <div v-if="!totalProducts" class="stat cart-empty">{{ $t('cart-is-empty') }}</div>
     <div class="languages">
-      <a href="#" @click.prevent="setLocale($event, 'en')" class="selected">en</a>
-      <a href="#" @click.prevent="setLocale($event, 'ru')">ru</a>
+      <a href="#" ref="en" @click.prevent="setLocale($event.target, 'en')" class="selected">en</a>
+      <a href="#" ref="ru" @click.prevent="setLocale($event.target, 'ru')">ru</a>
     </div>
   </header>
 </template>
@@ -41,14 +41,18 @@ export default {
   },
   */
 
+  mounted() {
+    this.setLocale(this.$refs[this.$i18n.locale], this.$i18n.locale);
+  },
+
   computed: {
     ...mapState(['totalProducts', 'totalPrice'])
   },
 
   methods: {
-    setLocale(e, locale = 'en') {
-      e.target.parentNode.children.forEach(el => {
-        el === e.target ?
+    setLocale($el, locale = 'en') {
+      $el.parentNode.children.forEach(el => {
+        el === $el ?
           el.classList.add('selected'):
           el.classList.remove('selected');
       })

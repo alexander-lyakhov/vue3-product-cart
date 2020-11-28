@@ -7,20 +7,22 @@ const messages = {
     'cart-is-empty': 'Cart is empty',
     'price': 'Price',
     'total':'Total',
-    'reset':'Reset'
+    'reset':'Reset',
+    'fetching-data':'Fetching data'
   },
   ru: {
     'products-in-cart': 'Товаров в корзине',
     'total-price': 'Общая стоимость',
-    'cart-is-empty': 'Карта пуста',
+    'cart-is-empty': 'Корзина пуста',
     'price': 'Цена',
     'total':'Итого',
-    'reset':'Сброс'
+    'reset':'Сброс',
+    'fetching-data':'Загрузка данных'
   }
 }
 
 export default createI18n({
-  locale: 'en',
+  locale: 'ru',
   fallbackLocale: 'en',
   messages
 })

@@ -1,7 +1,7 @@
 ﻿<template>
   <template v-if="!error">
     <div v-if="isLoading" class="message msg-info transparent" ref="msgInfo">
-      Fetching data...
+      {{ $t("fetching-data") }}...
     </div>
 
     <div v-else class="grid">
